@@ -1,11 +1,27 @@
+version: '3.9'
 services:
   mongo:
-    image: mongo
+    image: mongo:7
+    container_name: jobpilot-mongo
     restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: adminpassword
+    volumes:
+      - mongo_data:/data/db
     ports:
       - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: jobpilot-backend
+    restart: always
+    environment:
+      MONGO_URI: mongodb://admin:adminpassword@mongo:27017/jobpilot?authSource=admin
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
 
 volumes:
-  mongo-data:
+  mongo_data:
