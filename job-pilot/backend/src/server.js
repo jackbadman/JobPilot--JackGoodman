@@ -1,13 +1,12 @@
 require('dotenv').config();
 const express = require('express');
-const connectDB = require('./config/connectDB');  // database connect function
+const connectDB = require('./config/connectDB'); 
 
 const app = express();
 
-// connect to Mongo
-connectDB();
+connectDB();// connect to Mongo // database connect function
 
-// basic endpoint (optional)
+// basic endpoint to test server
 app.get('/', (req, res) => {
     res.send("Job Pilot API running");
 });
