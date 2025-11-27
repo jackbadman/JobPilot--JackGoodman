@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const jobApplicationSchema = new mongoose.Schema({
+const jobSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   jobTitle: String,
   company: String,
@@ -17,4 +17,4 @@ const jobApplicationSchema = new mongoose.Schema({
   files: [{ type: mongoose.Schema.Types.ObjectId, ref: "File" }]
 });
 
-export default mongoose.model("JobApplication", jobApplicationSchema);
+export default mongoose.model("Job", jobSchema);
