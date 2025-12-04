@@ -1,0 +1,21 @@
+Project: Job Pilot
+Sprint #: 3
+Date:
+Time:
+Attendees: Jack Goodman, Haoyi Wang
+
+Sprint Goal
+Review and improve the architecture and ERD to support upcoming features.
+
+Discussion Summary
+Reviewed app architecture and ERD.
+Identified that multiple-choice fields in the Users table should be stored in a separate table for better structure.
+Agreed to update ERD to reflect this change.
+
+Decisions Made
+Add a lookup table for multiple-choice user fields.
+Update ERD before continuing backend work.
+
+Next Steps
+Update ERD and database schema accordingly.
+Apply changes to models in code.

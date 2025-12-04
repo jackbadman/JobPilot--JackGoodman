@@ -1,0 +1,21 @@
+Project: Job Pilot
+Sprint #: 2
+Type: Asynchronous update (via email)
+Date: 14/11/2025
+Time: 10:44am
+Participants: Jack Goodman (update sent to Haoyi Wang)
+
+Sprint Goal
+Start backend development and progress toward CRUD functionality.
+
+Update Summary
+Shared progress via email instead of a meeting.
+Created project file, defined initial data schema, added README, and researched MERN.
+Trello updated to use sprint labels and a “Late” label for tracking.
+
+Decisions
+Email accepted as sprint communication.
+Continue using labels in Trello for sprint visibility.
+
+Next Steps
+Continue API development and begin CRUD testing.
