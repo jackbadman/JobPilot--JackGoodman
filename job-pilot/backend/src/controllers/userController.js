@@ -17,9 +17,3 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-const userSchema = new mongoose.Schema({
-  emailAddress: { type: String, required: true },
-  name: { type: String, required: true }
-});
-
-export default mongoose.model("User", userSchema);
