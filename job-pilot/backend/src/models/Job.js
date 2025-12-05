@@ -4,7 +4,7 @@ const jobSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   jobTitle: String,
   company: String,
-  location: String, 
+  location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" }, 
   salary: Number,
   jobType1: { type: String, enum: ["Full-time", "Part-Time", "Contract", "Internship", "Temporary", "Volunteer", "Other"]}, 
   jobType2: { type: String, enum: ["Office", "Remote", "Hybrid"] }, 
