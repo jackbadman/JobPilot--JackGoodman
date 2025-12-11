@@ -1,0 +1,23 @@
+Project: Job Pilot
+Sprint #: 4
+Date: 11/12/2025
+Time: 01:00 pm
+Attendees: Jack Goodman, Haoyi Wang
+
+Sprint Goal
+Mid-sprint review of backend progress to ensure MVP completion by the end of Sprint 4.
+
+Discussion Summary
+Demonstrated working GET and POST endpoints in Postman.
+Confirmed stable MongoDB Atlas connection with successful data retrieval.
+Reviewed current backend structure and its readiness for integrating CRUD pages.
+Assessed remaining tasks required to complete MVP backend functionality.
+
+Decisions Made
+Backend foundations are on track for MVP delivery this sprint.
+Frontend CRUD implementation is the immediate priority.
+
+Next Steps
+Complete frontend Job CRUD pages and begin integration testing.
+Add essential error handling and response consistency.
+Prepare a basic end-to-end workflow for review at the end of Sprint 4.
