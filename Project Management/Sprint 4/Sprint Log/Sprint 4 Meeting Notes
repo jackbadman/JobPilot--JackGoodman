@@ -21,3 +21,11 @@ Next Steps
 Complete frontend Job CRUD pages and begin integration testing.
 Add essential error handling and response consistency.
 Prepare a basic end-to-end workflow for review at the end of Sprint 4.
+
+
+
+Post-Sprint Outcome (Added after Sprint Completion)
+
+While the mid-sprint review indicated that the backend was on track for MVP completion, subsequent competing academic deadlines reduced the available development time during the latter half of Sprint 4. As a result, frontend CRUD functionality and full end-to-end integration were deferred to the following sprint.
+
+The decision to prioritise stabilising the MongoDB Atlas integration ensured that the backend foundation remained robust, reducing technical risk and enabling more efficient frontend development in Sprint 5.

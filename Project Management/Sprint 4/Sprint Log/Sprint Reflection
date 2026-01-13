@@ -1,0 +1,22 @@
+Sprint 4 – Reflection Log
+What went well:
+
+The sprint delivered a key infrastructure milestone by migrating the application from a local MongoDB instance to MongoDB Atlas.
+
+Database connectivity and environment configuration were stabilised, providing a reliable foundation for later development.
+
+Re-scoping the sprint helped reduce the risk of future rework and ensured later features can be built on a stable backend.
+
+Even better if:
+
+Sprint goals had been planned with clearer consideration of task dependencies, particularly where frontend and deployment tasks relied on backend infrastructure.
+
+The sprint backlog had focused more narrowly on infrastructure tasks rather than combining them with feature delivery.
+
+How we can improve:
+
+Sprint goals will be reviewed more consistently to ensure they are realistic and dependency-aware.
+
+Objectives will be defined more clearly and aligned with the SMART criteria, with less overlap between tasks.
+
+Any re-scoping will be documented more clearly in future sprint reviews.
