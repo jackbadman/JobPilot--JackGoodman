@@ -1,0 +1,56 @@
+flowchart LR
+
+%% Entry point
+APIClient[API Client Layer]
+
+%% Backend container
+subgraph BE[Node.js Express Backend]
+
+  %% API layer
+  subgraph API[REST API Layer]
+    AuthCtrl[Auth Controller]
+    JobCtrl[Job Application Controller]
+    FileCtrl[File Controller]
+  end
+
+  %% Cross-cutting concern
+  AuthMW[Auth Middleware JWT Verification]
+
+  %% Domain services
+  subgraph Services[Application Services]
+    AuthService[Auth Service]
+    JobService[Job Application Service]
+    FileService[File Processing Service]
+  end
+
+  %% Persistence adapters
+  subgraph Persist[Persistence Adapters]
+    Mongoose[Mongoose ORM]
+    GridFS[GridFS Adapter]
+  end
+
+end
+
+%% Database
+subgraph DB[MongoDB Database]
+  Users[Users Collection]
+  Jobs[Job Applications Collection]
+  Files[Files Collection GridFS]
+end
+
+%% Flow
+APIClient --> AuthCtrl
+APIClient --> JobCtrl
+APIClient --> FileCtrl
+
+AuthCtrl --> AuthMW --> AuthService
+JobCtrl --> AuthMW --> JobService
+FileCtrl --> AuthMW --> FileService
+
+AuthService --> Mongoose
+JobService --> Mongoose
+FileService --> GridFS
+
+Mongoose --> Users
+Mongoose --> Jobs
+GridFS --> Files

@@ -1,0 +1,34 @@
+flowchart LR
+
+%% Actors
+U((User))
+
+%% Client
+subgraph C[Client Layer]
+  B[Web Browser]
+  FE[React Frontend<br/>UI + State + API Client]
+end
+
+%% Server
+subgraph S[Server Layer]
+  BE[Node.js Express API<br/>REST Controllers + Services]
+  JWT[JWT Auth Middleware<br/>Token Verification]
+end
+
+%% Data / Storage
+subgraph D[Data Layer]
+  MDB[(MongoDB Database)]
+  GFS[(GridFS File Storage<br/>within MongoDB)]
+end
+
+%% Trust boundaries
+U --> B --> FE
+FE -->|HTTPS JSON| BE
+BE --> JWT
+JWT --> BE
+
+BE -->|CRUD| MDB
+BE -->|File Upload/Download| GFS
+
+%% Notes: token lifecycle
+FE -->|Stores token| FE
