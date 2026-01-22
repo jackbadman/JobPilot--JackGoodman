@@ -1,20 +1,71 @@
 import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
-  //userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  jobTitle: String,
-  company: String,
-  location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" }, 
-  salary: Number,
-  jobType1: { type: String, enum: ["Full-time", "Part-Time", "Contract", "Internship", "Temporary", "Volunteer", "Other"]}, 
-  jobType2: { type: String, enum: ["Office", "Remote", "Hybrid"] }, 
-  appliedDate: Date,
-  closingDate: Date,
-  createdDate: { type: Date, default: Date.now },
-  updatedDate: Date,
-  jobStatus: String, 
-  favourited: Boolean,
-  files: [{ type: mongoose.Schema.Types.ObjectId, ref: "File" }]
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+
+  company: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  jobTitle: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  location: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Location",
+    required: true
+  },
+
+  jobStatus: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "JobStatus",
+    required: true
+  },
+
+  jobType: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "JobType",
+    required: true
+  },
+
+  workType: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "WorkType",
+    required: true
+  },
+
+  salary: {
+    type: Number
+  },
+
+  appliedDate: {
+    type: Date
+  },
+
+  closingDate: {
+    type: Date
+  },
+
+  favourited: {
+    type: Boolean,
+    default: false
+  },
+
+  files: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "File"
+  }]
+}, {
+  timestamps: true
 });
 
 export default mongoose.model("Job", jobSchema);
