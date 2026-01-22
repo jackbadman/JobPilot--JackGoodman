@@ -1,0 +1,63 @@
+---
+config:
+  layout: elk
+---
+erDiagram
+	direction LR
+	USER {
+		ObjectId _id PK ""  
+		string email  ""  
+		string name  ""  
+	}
+
+	JOB {
+		ObjectId _id PK ""  
+		string company  ""  
+		string jobTitle  ""  
+		number salary  ""  
+		date appliedDate  ""  
+		date closingDate  ""  
+		boolean favourited  ""  
+		ObjectId userId FK ""  
+		ObjectId jobStatus FK ""  
+		ObjectId jobType FK ""  
+		ObjectId workType FK ""  
+		ObjectId location FK ""  
+		date createdAt  ""  
+		date updatedAt  ""  
+	}
+
+	FILE {
+		ObjectId _id PK ""  
+		string fileName  ""  
+		string contentType  ""  
+		string description  ""  
+		ObjectId jobId FK ""  
+	}
+
+	JOB_STATUS {
+		ObjectId _id PK ""  
+		string name  ""  
+	}
+
+	JOB_TYPE {
+		ObjectId _id PK ""  
+		string name  ""  
+	}
+
+	WORK_TYPE {
+		ObjectId _id PK ""  
+		string name  ""  
+	}
+
+	LOCATION {
+		ObjectId _id PK ""  
+		string name  ""  
+	}
+
+	USER||--o{JOB:"submits"
+	JOB||--o{FILE:"attaches"
+	JOB}o--||JOB_STATUS:"has"
+	JOB}o--||JOB_TYPE:"classified_as"
+	JOB}o--||WORK_TYPE:"work_pattern"
+	JOB}o--||LOCATION:"located_in"
