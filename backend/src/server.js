@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 
 import connectDB from "./config/connectDB.js"; 
+import "./models/index.js";
 import userRoutes from "./routes/userRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";

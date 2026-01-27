@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const JobStatusSchema = new mongoose.Schema({
+const jobStatusSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ const JobStatusSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("JobStatus", JobStatusSchema);
+export default mongoose.model("JobStatus", jobStatusSchema);

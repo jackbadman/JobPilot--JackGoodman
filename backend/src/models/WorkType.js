@@ -1,4 +1,6 @@
-const WorkTypeSchema = new mongoose.Schema({
+import mongoose from "mongoose";
+
+const workTypeSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -6,4 +8,4 @@ const WorkTypeSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("WorkType", WorkTypeSchema);
+export default mongoose.model("WorkType", workTypeSchema);
