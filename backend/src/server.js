@@ -8,6 +8,7 @@ import userRoutes from "./routes/userRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import lookupRoutes from "./routes/lookupRoutes.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/lookup", lookupRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import SummaryCards from "../components/SummaryCards";
 import JobsTable from "../components/JobsTable";
 
@@ -24,7 +25,12 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h1>Application Dashboard</h1>
+      <div className="page-header">
+        <h1>Application Dashboard</h1>
+        <Link className="create-button" to="/jobs/new">
+          Create application
+        </Link>
+      </div>
 
       {summary && <SummaryCards summary={summary} />}
 

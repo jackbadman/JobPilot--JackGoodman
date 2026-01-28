@@ -19,7 +19,7 @@ export default function JobsTable({ jobs }) {
             <td>{job.company}</td>
             <td>{job.jobTitle}</td>
             <td>{job.jobStatus?.name || "—"}</td>
-            <td>{job.jobType1?.name || "—"}</td>
+            <td>{job.jobType?.name || "—"}</td>
             <td>{job.location?.name || "—"}</td>
             <td>
               {new Date(job.createdAt).toLocaleDateString()}
