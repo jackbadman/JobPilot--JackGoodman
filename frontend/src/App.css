@@ -1,73 +1,264 @@
 #root {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: left;
+  padding: 3.5rem 1.75rem 4rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.page-shell {
+  display: grid;
+  gap: 2.5rem;
 }
 
 .page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 2rem;
   flex-wrap: wrap;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.page-header h1 {
+  font-size: clamp(2.2rem, 3vw, 3rem);
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+}
+
+.page-subtitle {
+  color: var(--muted);
+  max-width: 520px;
 }
 
 .create-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.6rem 1rem;
+  padding: 0.7rem 1.5rem;
   border-radius: 999px;
-  background: #f5f5f5;
-  color: #1a1a1a;
+  background: var(--accent);
+  color: #fff;
   font-weight: 600;
+  box-shadow: 0 16px 30px rgba(31, 74, 204, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .create-button:hover {
-  background: #e8e8e8;
+  transform: translateY(-1px);
+  box-shadow: 0 20px 40px rgba(31, 74, 204, 0.32);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.summary-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.summary-label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.summary-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.summary-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.table-card {
+  background: var(--card);
+  border-radius: 22px;
+  padding: 1.5rem 1.75rem 1rem;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.table-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.table-subtitle {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.table-count {
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.jobs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  min-width: 720px;
+}
+
+.jobs-table thead th {
+  text-align: left;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.jobs-table tbody td {
+  padding: 0.95rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.table-actions {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.table-action {
+  border: 1px solid #3a3a3a;
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.table-action.danger {
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+.jobs-table tbody tr:hover {
+  background: rgba(31, 74, 204, 0.05);
+}
+
+.cell-strong {
+  font-weight: 600;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--ink);
+}
+
+.status-applied {
+  background: rgba(31, 74, 204, 0.12);
+  color: var(--accent);
+}
+
+.status-interview {
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+}
+
+.status-offer {
+  background: rgba(22, 163, 74, 0.12);
+  color: #15803d;
+}
+
+.status-rejected {
+  background: rgba(220, 38, 38, 0.12);
+  color: #b91c1c;
+}
+
+.status-unknown {
+  background: rgba(100, 116, 139, 0.18);
+  color: #475569;
+}
+
+.empty-state {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.empty-title {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.empty-subtitle {
+  color: var(--muted);
+  max-width: 360px;
+}
+
+@media (max-width: 720px) {
+  #root {
+    padding: 2.5rem 1.25rem 3rem;
+  }
+
+  .page-header {
+    align-items: flex-start;
+  }
+
+  .create-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .jobs-table {
+    min-width: 640px;
+  }
 }
 
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(15, 23, 42, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,10 +267,11 @@
 
 .modal-card {
   width: min(720px, 100%);
-  background: #1e1e1e;
-  border-radius: 16px;
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: 18px;
   padding: 2rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.4);
 }
 
 .modal-header {
@@ -104,14 +296,14 @@
 
 .input {
   border-radius: 10px;
-  border: 1px solid #3a3a3a;
-  background: #2a2a2a;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.6);
   color: inherit;
   padding: 0.6rem 0.75rem;
 }
 
 .input:focus {
-  outline: 2px solid #4b7cff;
+  outline: 2px solid rgba(148, 163, 184, 0.8);
   outline-offset: 1px;
 }
 
@@ -125,12 +317,12 @@
 
 .form-error {
   grid-column: 1 / -1;
-  color: #ffb4b4;
+  color: #fecaca;
   margin: 0;
 }
 
 .ghost-button {
   background: transparent;
-  border: 1px solid #3a3a3a;
+  border: 1px solid rgba(148, 163, 184, 0.4);
   color: inherit;
 }
