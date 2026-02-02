@@ -1,6 +1,9 @@
 import Job from "../models/Job.js";
 
-// Create a new job application
+/**
+ * Create a new job application for the authenticated user.
+ * Expects job fields in req.body.
+ */
 export const createJob = async (req, res) => {
   try {
     const job = await Job.create({
@@ -13,9 +16,10 @@ export const createJob = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-
-
- //Get jobs with optional filters (dashboard table)
+/**
+ * List jobs for the authenticated user with optional filters.
+ * Supports status/type/workType/location and sort query params.
+ */
 export const getJobs = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -48,7 +52,10 @@ export const getJobs = async (req, res) => {
   }
 };
 
-// Get single job by ID (ownership enforced)
+/**
+ * Get a single job by id for the authenticated user.
+ * Enforces ownership by matching userId.
+ */
 export const getJobById = async (req, res) => {
   try {
     const job = await Job.findOne({
@@ -70,9 +77,9 @@ export const getJobById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
- // Update job application
+/**
+ * Update a job application by id for the authenticated user.
+ */
 export const updateJob = async (req, res) => {
   try {
     const job = await Job.findOneAndUpdate(
@@ -90,9 +97,9 @@ export const updateJob = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-
-
- // Delete job application
+/**
+ * Delete a job application by id for the authenticated user.
+ */
 export const deleteJob = async (req, res) => {
   try {
     const job = await Job.findOneAndDelete({

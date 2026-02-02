@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+/**
+ * Job application schema owned by a user and linked to lookup data.
+ */
 const jobSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,

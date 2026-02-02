@@ -1,3 +1,6 @@
+/**
+ * Dashboard view: loads summary metrics and job list.
+ */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SummaryCards from "../components/SummaryCards";

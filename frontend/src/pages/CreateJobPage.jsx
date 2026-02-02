@@ -1,3 +1,6 @@
+/**
+ * Create job form view; fetches lookup data for select inputs.
+ */
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

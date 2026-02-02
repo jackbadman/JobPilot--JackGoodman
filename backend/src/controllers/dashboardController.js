@@ -1,5 +1,8 @@
 import Job from "../models/Job.js";
 
+/**
+ * Return summary metrics for the authenticated user.
+ */
 export const getDashboardSummary = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -34,7 +37,7 @@ export const getDashboardSummary = async (req, res) => {
       }
     ]);
 
-    // Recent applications (last 14 days)
+    // Recent applications within the last 14 days.
     const fourteenDaysAgo = new Date();
     fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
 

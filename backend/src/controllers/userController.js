@@ -2,9 +2,17 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
+/**
+ * Issue a short-lived access token for a user id.
+ * @param {string} userId
+ * @returns {string}
+ */
 const issueToken = (userId) =>
   jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+/**
+ * Register a new user and return a token + public profile.
+ */
 export const register = async (req, res) => {
   try {
     const { emailAddress, name, password } = req.body;
@@ -31,6 +39,9 @@ export const register = async (req, res) => {
   }
 };
 
+/**
+ * Authenticate a user and return a token + public profile.
+ */
 export const login = async (req, res) => {
   try {
     const { emailAddress, password } = req.body;
@@ -59,6 +70,9 @@ export const login = async (req, res) => {
   }
 };
 
+/**
+ * List users with public fields only.
+ */
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().select("emailAddress name");
@@ -68,6 +82,9 @@ export const getUsers = async (req, res) => {
   }
 };
 
+/**
+ * Return the authenticated user's public profile.
+ */
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("emailAddress name");

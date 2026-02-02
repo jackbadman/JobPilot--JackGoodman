@@ -1,3 +1,6 @@
+/**
+ * Job list table with edit/delete actions.
+ */
 import { Link } from "react-router-dom";
 
 export default function JobsTable({ jobs, onDelete }) {

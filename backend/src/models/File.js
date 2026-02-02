@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+/**
+ * File metadata schema associated with a job.
+ */
 const fileSchema = new mongoose.Schema({
   jobId: { type: mongoose.Schema.Types.ObjectId, ref: "JobApplication", required: true },
   contentType: String,

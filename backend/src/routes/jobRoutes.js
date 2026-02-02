@@ -1,3 +1,6 @@
+/**
+ * Job CRUD routes. All routes require auth middleware.
+ */
 import express from "express";
 import {
   createJob,

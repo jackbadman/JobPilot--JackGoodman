@@ -1,3 +1,6 @@
+/**
+ * Lookup routes for dropdown data. All routes require auth middleware.
+ */
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
 import {

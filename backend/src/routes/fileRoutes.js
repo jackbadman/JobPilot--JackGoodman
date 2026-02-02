@@ -1,3 +1,6 @@
+/**
+ * File metadata routes.
+ */
 import express from "express";
 import {
   uploadFile,

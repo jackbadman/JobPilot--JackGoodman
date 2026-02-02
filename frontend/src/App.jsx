@@ -1,3 +1,6 @@
+/**
+ * Top-level route map for the SPA.
+ */
 import { Navigate, Route, Routes } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import CreateJobPage from "./pages/CreateJobPage";

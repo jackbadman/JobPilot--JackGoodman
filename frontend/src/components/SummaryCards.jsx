@@ -1,3 +1,6 @@
+/**
+ * Dashboard summary cards for totals and recent counts.
+ */
 export default function SummaryCards({ summary }) {
   return (
     <div style={{ display: "flex", gap: "1rem" }}>

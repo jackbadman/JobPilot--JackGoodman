@@ -1,5 +1,9 @@
 import File from "../models/File.js";
 
+/**
+ * Create a new file metadata record.
+ * Note: binary uploads are not handled here.
+ */
 export const uploadFile = async (req, res) => {
   try {
     const file = await File.create(req.body);
@@ -9,6 +13,9 @@ export const uploadFile = async (req, res) => {
   }
 };
 
+/**
+ * List file metadata for a job id.
+ */
 export const getFilesByJob = async (req, res) => {
   try {
     const files = await File.find({ jobId: req.params.jobId });
@@ -18,6 +25,9 @@ export const getFilesByJob = async (req, res) => {
   }
 };
 
+/**
+ * Delete a file metadata record by id.
+ */
 export const deleteFile = async (req, res) => {
   try {
     const file = await File.findByIdAndDelete(req.params.id);

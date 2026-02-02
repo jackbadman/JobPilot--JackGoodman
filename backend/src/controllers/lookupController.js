@@ -3,6 +3,9 @@ import JobType from "../models/JobType.js";
 import WorkType from "../models/WorkType.js";
 import Location from "../models/Location.js";
 
+/**
+ * Build a handler that returns items sorted by name.
+ */
 const listByName = model => async (req, res) => {
   try {
     const items = await model.find().sort({ name: 1 });
