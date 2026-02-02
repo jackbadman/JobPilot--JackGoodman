@@ -1,0 +1,33 @@
+Sprint Meeting
+
+Project: Job Pilot
+Sprint #: 5
+Date: 30/01/2025
+Time: 11:15 am
+Attendees: Jack Goodman, Haoyi Wang
+
+Sprint Goal
+
+Demonstrate the current MVP and review potential extensions to the system.
+
+Discussion Summary
+
+The working MVP of the Job Pilot application was showcased, demonstrating core functionality for recording and managing job applications. The system was confirmed to be stable and aligned with the original project objectives.
+
+Potential use of agentic AI within the application was reviewed. In particular, the idea of parsing job descriptions to automatically populate application fields was discussed. It was agreed that this approach was not realistic or reliable enough given the variability of job descriptions.
+
+Decisions Made
+
+The current MVP meets the intended core requirements of the project.
+
+Parsing job descriptions into structured fields using AI will not be pursued.
+
+If agentic AI is included, an alternative use case more appropriate to the system will need to be identified.
+
+Next Steps
+
+Continue next stages of development as planned.
+
+Explore alternative, more suitable uses of agentic AI that align with the system’s goals.
+
+Prioritise features that improve usability and robustness of application tracking.
