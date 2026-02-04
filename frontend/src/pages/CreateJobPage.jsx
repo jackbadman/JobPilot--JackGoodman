@@ -28,20 +28,25 @@ export default function CreateJobPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  const authHeaders = () => {
+    const token = localStorage.getItem("token");
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+
   useEffect(() => {
     Promise.all([
-      fetch("http://localhost:5000/api/lookup/job-statuses").then(res =>
-        res.json()
-      ),
-      fetch("http://localhost:5000/api/lookup/job-types").then(res =>
-        res.json()
-      ),
-      fetch("http://localhost:5000/api/lookup/work-types").then(res =>
-        res.json()
-      ),
-      fetch("http://localhost:5000/api/lookup/locations").then(res =>
-        res.json()
-      )
+      fetch("http://localhost:5000/api/lookup/job-statuses", {
+        headers: authHeaders()
+      }).then(res => res.json()),
+      fetch("http://localhost:5000/api/lookup/job-types", {
+        headers: authHeaders()
+      }).then(res => res.json()),
+      fetch("http://localhost:5000/api/lookup/work-types", {
+        headers: authHeaders()
+      }).then(res => res.json()),
+      fetch("http://localhost:5000/api/lookup/locations", {
+        headers: authHeaders()
+      }).then(res => res.json())
     ])
       .then(([jobStatuses, jobTypes, workTypes, locations]) => {
         setLookups({ jobStatuses, jobTypes, workTypes, locations });
@@ -81,7 +86,10 @@ export default function CreateJobPage() {
 
     fetch("http://localhost:5000/api/jobs", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders()
+      },
       body: JSON.stringify(payload)
     })
       .then(async res => {
@@ -90,7 +98,7 @@ export default function CreateJobPage() {
           throw new Error(data.error || "Failed to create application.");
         }
       })
-      .then(() => navigate("/"))
+      .then(() => navigate("/dashboard"))
       .catch(err => setError(err.message))
       .finally(() => setSubmitting(false));
   };
@@ -103,7 +111,7 @@ export default function CreateJobPage() {
           <button
             type="button"
             className="ghost-button"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/dashboard")}
           >
             Close
           </button>
@@ -228,7 +236,7 @@ export default function CreateJobPage() {
           {error ? <p className="form-error">{error}</p> : null}
 
           <div className="form-actions">
-            <button type="button" className="ghost-button" onClick={() => navigate("/")}>
+            <button type="button" className="ghost-button" onClick={() => navigate("/dashboard")}>
               Cancel
             </button>
             <button type="submit" disabled={submitting}>

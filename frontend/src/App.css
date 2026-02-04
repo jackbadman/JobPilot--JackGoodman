@@ -37,6 +37,23 @@
   max-width: 520px;
 }
 
+.home-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.auth-card {
+  display: grid;
+  gap: 1rem;
+  max-width: 420px;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: #0f172a;
+  color: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
 .create-button {
   display: inline-flex;
   align-items: center;

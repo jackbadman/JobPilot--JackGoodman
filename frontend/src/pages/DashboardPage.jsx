@@ -10,15 +10,24 @@ export default function DashboardPage() {
   const [summary, setSummary] = useState(null);
   const [jobs, setJobs] = useState([]);
 
+  const authHeaders = () => {
+    const token = localStorage.getItem("token");
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+
   const fetchSummary = () => {
-    fetch("http://localhost:5000/api/dashboard/summary")
+    fetch("http://localhost:5000/api/dashboard/summary", {
+      headers: authHeaders()
+    })
       .then(res => res.json())
       .then(setSummary)
       .catch(console.error);
   };
 
   const fetchJobs = () => {
-    fetch("http://localhost:5000/api/jobs")
+    fetch("http://localhost:5000/api/jobs", {
+      headers: authHeaders()
+    })
       .then(res => res.json())
       .then(setJobs)
       .catch(console.error);
@@ -36,7 +45,8 @@ export default function DashboardPage() {
 
   const handleDelete = jobId => {
     fetch(`http://localhost:5000/api/jobs/${jobId}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: authHeaders()
     })
       .then(async res => {
         if (!res.ok) {

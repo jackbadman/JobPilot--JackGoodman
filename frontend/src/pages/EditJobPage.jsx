@@ -37,23 +37,30 @@ export default function EditJobPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const authHeaders = () => {
+    const token = localStorage.getItem("token");
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+
   useEffect(() => {
     let isMounted = true;
 
     Promise.all([
-      fetch("http://localhost:5000/api/lookup/job-statuses").then(res =>
-        res.json()
-      ),
-      fetch("http://localhost:5000/api/lookup/job-types").then(res =>
-        res.json()
-      ),
-      fetch("http://localhost:5000/api/lookup/work-types").then(res =>
-        res.json()
-      ),
-      fetch("http://localhost:5000/api/lookup/locations").then(res =>
-        res.json()
-      ),
-      fetch(`http://localhost:5000/api/jobs/${id}`).then(res => {
+      fetch("http://localhost:5000/api/lookup/job-statuses", {
+        headers: authHeaders()
+      }).then(res => res.json()),
+      fetch("http://localhost:5000/api/lookup/job-types", {
+        headers: authHeaders()
+      }).then(res => res.json()),
+      fetch("http://localhost:5000/api/lookup/work-types", {
+        headers: authHeaders()
+      }).then(res => res.json()),
+      fetch("http://localhost:5000/api/lookup/locations", {
+        headers: authHeaders()
+      }).then(res => res.json()),
+      fetch(`http://localhost:5000/api/jobs/${id}`, {
+        headers: authHeaders()
+      }).then(res => {
         if (!res.ok) {
           throw new Error("Failed to load application.");
         }
@@ -122,7 +129,10 @@ export default function EditJobPage() {
 
     fetch(`http://localhost:5000/api/jobs/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders()
+      },
       body: JSON.stringify(payload)
     })
       .then(async res => {
@@ -131,7 +141,7 @@ export default function EditJobPage() {
           throw new Error(data.error || "Failed to update application.");
         }
       })
-      .then(() => navigate("/"))
+      .then(() => navigate("/dashboard"))
       .catch(err => setError(err.message))
       .finally(() => setSubmitting(false));
   };
@@ -144,7 +154,7 @@ export default function EditJobPage() {
           <button
             type="button"
             className="ghost-button"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/dashboard")}
           >
             Close
           </button>
@@ -275,7 +285,7 @@ export default function EditJobPage() {
               <button
                 type="button"
                 className="ghost-button"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/dashboard")}
               >
                 Cancel
               </button>
