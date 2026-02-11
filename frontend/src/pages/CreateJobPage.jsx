@@ -3,6 +3,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../utils/api";
 
 const emptyOption = { _id: "", name: "Select..." };
 
@@ -28,25 +29,12 @@ export default function CreateJobPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const authHeaders = () => {
-    const token = localStorage.getItem("token");
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  };
-
   useEffect(() => {
     Promise.all([
-      fetch("http://localhost:5000/api/lookup/job-statuses", {
-        headers: authHeaders()
-      }).then(res => res.json()),
-      fetch("http://localhost:5000/api/lookup/job-types", {
-        headers: authHeaders()
-      }).then(res => res.json()),
-      fetch("http://localhost:5000/api/lookup/work-types", {
-        headers: authHeaders()
-      }).then(res => res.json()),
-      fetch("http://localhost:5000/api/lookup/locations", {
-        headers: authHeaders()
-      }).then(res => res.json())
+      apiFetch("http://localhost:5000/api/lookup/job-statuses").then(res => res.json()),
+      apiFetch("http://localhost:5000/api/lookup/job-types").then(res => res.json()),
+      apiFetch("http://localhost:5000/api/lookup/work-types").then(res => res.json()),
+      apiFetch("http://localhost:5000/api/lookup/locations").then(res => res.json())
     ])
       .then(([jobStatuses, jobTypes, workTypes, locations]) => {
         setLookups({ jobStatuses, jobTypes, workTypes, locations });
@@ -84,12 +72,9 @@ export default function CreateJobPage() {
       closingDate: form.closingDate || undefined
     };
 
-    fetch("http://localhost:5000/api/jobs", {
+    apiFetch("http://localhost:5000/api/jobs", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...authHeaders()
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     })
       .then(async res => {

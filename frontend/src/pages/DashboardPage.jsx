@@ -5,31 +5,33 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SummaryCards from "../components/SummaryCards";
 import JobsTable from "../components/JobsTable";
+import { apiFetch } from "../utils/api";
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState(null);
   const [jobs, setJobs] = useState([]);
 
-  const authHeaders = () => {
-    const token = localStorage.getItem("token");
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  };
-
   const fetchSummary = () => {
-    fetch("http://localhost:5000/api/dashboard/summary", {
-      headers: authHeaders()
-    })
-      .then(res => res.json())
-      .then(setSummary)
+    apiFetch("http://localhost:5000/api/dashboard/summary")
+      .then(async res => {
+        const data = await res.json().catch(() => null);
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load dashboard summary.");
+        }
+        setSummary(data);
+      })
       .catch(console.error);
   };
 
   const fetchJobs = () => {
-    fetch("http://localhost:5000/api/jobs", {
-      headers: authHeaders()
-    })
-      .then(res => res.json())
-      .then(setJobs)
+    apiFetch("http://localhost:5000/api/jobs")
+      .then(async res => {
+        const data = await res.json().catch(() => null);
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load applications.");
+        }
+        setJobs(data);
+      })
       .catch(console.error);
   };
 
@@ -44,10 +46,7 @@ export default function DashboardPage() {
   }, []);
 
   const handleDelete = jobId => {
-    fetch(`http://localhost:5000/api/jobs/${jobId}`, {
-      method: "DELETE",
-      headers: authHeaders()
-    })
+    apiFetch(`http://localhost:5000/api/jobs/${jobId}`, { method: "DELETE" })
       .then(async res => {
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));

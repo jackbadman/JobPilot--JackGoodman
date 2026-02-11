@@ -3,6 +3,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../utils/api";
 
 const emptyOption = { _id: "", name: "Select..." };
 
@@ -37,30 +38,15 @@ export default function EditJobPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const authHeaders = () => {
-    const token = localStorage.getItem("token");
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  };
-
   useEffect(() => {
     let isMounted = true;
 
     Promise.all([
-      fetch("http://localhost:5000/api/lookup/job-statuses", {
-        headers: authHeaders()
-      }).then(res => res.json()),
-      fetch("http://localhost:5000/api/lookup/job-types", {
-        headers: authHeaders()
-      }).then(res => res.json()),
-      fetch("http://localhost:5000/api/lookup/work-types", {
-        headers: authHeaders()
-      }).then(res => res.json()),
-      fetch("http://localhost:5000/api/lookup/locations", {
-        headers: authHeaders()
-      }).then(res => res.json()),
-      fetch(`http://localhost:5000/api/jobs/${id}`, {
-        headers: authHeaders()
-      }).then(res => {
+      apiFetch("http://localhost:5000/api/lookup/job-statuses").then(res => res.json()),
+      apiFetch("http://localhost:5000/api/lookup/job-types").then(res => res.json()),
+      apiFetch("http://localhost:5000/api/lookup/work-types").then(res => res.json()),
+      apiFetch("http://localhost:5000/api/lookup/locations").then(res => res.json()),
+      apiFetch(`http://localhost:5000/api/jobs/${id}`).then(res => {
         if (!res.ok) {
           throw new Error("Failed to load application.");
         }
@@ -127,12 +113,9 @@ export default function EditJobPage() {
       closingDate: form.closingDate || undefined
     };
 
-    fetch(`http://localhost:5000/api/jobs/${id}`, {
+    apiFetch(`http://localhost:5000/api/jobs/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        ...authHeaders()
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     })
       .then(async res => {

@@ -8,15 +8,14 @@ import EditJobPage from "./pages/EditJobPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-
-const hasToken = () => Boolean(localStorage.getItem("token"));
+import { hasValidToken } from "./utils/auth";
 
 function RequireAuth({ children }) {
-  return hasToken() ? children : <Navigate to="/" replace />;
+  return hasValidToken() ? children : <Navigate to="/" replace />;
 }
 
 function RedirectIfAuth({ children }) {
-  return hasToken() ? <Navigate to="/dashboard" replace /> : children;
+  return hasValidToken() ? <Navigate to="/dashboard" replace /> : children;
 }
 
 function App() {

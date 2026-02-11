@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { clearToken, setToken } from "../utils/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -29,12 +30,16 @@ export default function LoginPage() {
         if (!res.ok) {
           throw new Error(data.error || "Login failed.");
         }
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        if (!data.token) {
+          throw new Error("Login failed: missing auth token.");
         }
+        setToken(data.token);
       })
       .then(() => navigate("/dashboard"))
-      .catch(err => setError(err.message))
+      .catch(err => {
+        clearToken();
+        setError(err.message);
+      })
       .finally(() => setSubmitting(false));
   };
 
