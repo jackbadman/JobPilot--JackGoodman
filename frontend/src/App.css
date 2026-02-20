@@ -338,6 +338,55 @@
   margin: 0;
 }
 
+.form-span {
+  grid-column: 1 / -1;
+}
+
+.upload-card {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 14px;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.45);
+  display: grid;
+  gap: 0.6rem;
+}
+
+.upload-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.upload-help {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.8);
+  font-size: 0.88rem;
+}
+
+.upload-form {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.upload-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.upload-error {
+  margin: 0;
+  color: #fecaca;
+}
+
+.upload-success {
+  margin: 0;
+  color: #bbf7d0;
+}
+
+.upload-success a {
+  color: #86efac;
+  text-decoration: underline;
+}
+
 .ghost-button {
   background: transparent;
   border: 1px solid rgba(148, 163, 184, 0.4);

@@ -1,4 +1,5 @@
 import Job from "../models/Job.js";
+import File from "../models/File.js";
 
 /**
  * Create a new job application for the authenticated user.
@@ -6,10 +7,30 @@ import Job from "../models/Job.js";
  */
 export const createJob = async (req, res) => {
   try {
+    const { fileIds, ...jobPayload } = req.body;
     const job = await Job.create({
-      ...req.body,
+      ...jobPayload,
       userId: req.user.id
     });
+
+    if (Array.isArray(fileIds) && fileIds.length) {
+      const attachableFiles = await File.find({
+        _id: { $in: fileIds },
+        userId: req.user.id,
+        $or: [{ jobId: null }, { jobId: { $exists: false } }]
+      }).select("_id");
+
+      if (attachableFiles.length) {
+        const attachableIds = attachableFiles.map(file => file._id);
+        await File.updateMany(
+          { _id: { $in: attachableIds } },
+          { $set: { jobId: job._id } }
+        );
+        await Job.findByIdAndUpdate(job._id, {
+          $addToSet: { files: { $each: attachableIds } }
+        });
+      }
+    }
 
     res.status(201).json(job);
   } catch (err) {

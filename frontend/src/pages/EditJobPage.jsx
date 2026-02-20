@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiFetch } from "../utils/api";
+import FileUpload from "../components/FileUpload";
 
 const emptyOption = { _id: "", name: "Select..." };
 
@@ -261,6 +262,10 @@ export default function EditJobPage() {
                 onChange={event => updateField("closingDate", event.target.value)}
               />
             </label>
+
+            <div className="form-span">
+              <FileUpload jobId={id} />
+            </div>
 
             {error ? <p className="form-error">{error}</p> : null}
 

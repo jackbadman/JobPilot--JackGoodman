@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../utils/api";
+import FileUpload from "../components/FileUpload";
 
 const emptyOption = { _id: "", name: "Select..." };
 
@@ -28,6 +29,7 @@ export default function CreateJobPage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [uploadedFileIds, setUploadedFileIds] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -69,7 +71,8 @@ export default function CreateJobPage() {
       workType: form.workType,
       salary: form.salary ? Number(form.salary) : undefined,
       appliedDate: form.appliedDate || undefined,
-      closingDate: form.closingDate || undefined
+      closingDate: form.closingDate || undefined,
+      fileIds: uploadedFileIds
     };
 
     apiFetch("http://localhost:5000/api/jobs", {
@@ -217,6 +220,17 @@ export default function CreateJobPage() {
               onChange={event => updateField("closingDate", event.target.value)}
             />
           </label>
+
+          <div className="form-span">
+            <FileUpload
+              onUploaded={file => {
+                if (!file?._id) return;
+                setUploadedFileIds(prev => (
+                  prev.includes(file._id) ? prev : [...prev, file._id]
+                ));
+              }}
+            />
+          </div>
 
           {error ? <p className="form-error">{error}</p> : null}
 
