@@ -1,92 +1,50 @@
-import { useState } from "react";
-import { apiFetch } from "../utils/api";
-
 const ACCEPTED_TYPES = ".pdf,.png,.jpg,.jpeg,.doc,.docx";
 
 /**
- * Uploads a file to the backend Cloudinary endpoint.
+ * File picker used by job forms. Uploading is handled by the parent submit flow.
  */
-export default function FileUpload({ jobId, onUploaded }) {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
-  const [uploadedFile, setUploadedFile] = useState(null);
-
+export default function FileUpload({ files = [], onFilesChange, disabled = false }) {
   const onFileChange = event => {
-    const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
-    setError("");
+    const pickedFiles = Array.from(event.target.files || []);
+    if (!pickedFiles.length) return;
+    onFilesChange?.([...files, ...pickedFiles]);
+    event.target.value = "";
   };
 
-  const onSubmit = async event => {
-    event.preventDefault();
-
-    if (!selectedFile) {
-      setError("Please choose a file before uploading.");
-      return;
-    }
-    setUploading(true);
-    setError("");
-
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    if (jobId) {
-      formData.append("jobId", jobId);
-    }
-
-    try {
-      const response = await apiFetch("http://localhost:5000/api/upload", {
-        method: "POST",
-        body: formData
-      });
-      const data = await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.error || "File upload failed.");
-      }
-
-      setUploadedFile(data);
-      if (typeof onUploaded === "function") {
-        onUploaded(data);
-      }
-      setSelectedFile(null);
-    } catch (err) {
-      setError(err.message || "File upload failed.");
-    } finally {
-      setUploading(false);
-    }
+  const removeFile = index => {
+    onFilesChange?.(files.filter((_, fileIndex) => fileIndex !== index));
   };
 
   return (
     <section className="upload-card" aria-label="File upload">
-      <h3 className="upload-title">Upload file</h3>
-      <p className="upload-help">
-        Allowed: PDF, DOC, DOCX, PNG, JPG. Max size: 5MB.
-        {!jobId ? " File will be linked to your account until attached to a job." : ""}
-      </p>
+      <h3 className="upload-title">Attach files</h3>
+      <p className="upload-help">Allowed: PDF, DOC, DOCX, PNG, JPG. Max size: 5MB each.</p>
 
-      <form className="upload-form" onSubmit={onSubmit}>
-        <input
-          className="input"
-          type="file"
-          accept={ACCEPTED_TYPES}
-          onChange={onFileChange}
-          disabled={uploading}
-        />
+      <input
+        className="input"
+        type="file"
+        accept={ACCEPTED_TYPES}
+        multiple
+        onChange={onFileChange}
+        disabled={disabled}
+      />
 
-        <div className="upload-actions">
-          <button type="submit" disabled={uploading || !selectedFile}>
-            {uploading ? "Uploading..." : "Upload"}
-          </button>
+      {files.length ? (
+        <div className="upload-file-list">
+          {files.map((file, index) => (
+            <div key={`${file.name}-${file.size}-${index}`} className="upload-file-row">
+              <span>{file.name}</span>
+              <button
+                type="button"
+                className="table-action danger"
+                onClick={() => removeFile(index)}
+                disabled={disabled}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
         </div>
-      </form>
-
-      {error ? <p className="upload-error">{error}</p> : null}
-
-      {uploadedFile?.url ? (
-        <p className="upload-success">
-          Uploaded: <a href={uploadedFile.url} target="_blank" rel="noreferrer">{uploadedFile.filename || uploadedFile.name || "View file"}</a>
-        </p>
       ) : null}
     </section>
   );

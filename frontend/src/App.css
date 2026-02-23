@@ -387,6 +387,21 @@
   text-decoration: underline;
 }
 
+.upload-file-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.upload-file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 8px;
+}
+
 .ghost-button {
   background: transparent;
   border: 1px solid rgba(148, 163, 184, 0.4);

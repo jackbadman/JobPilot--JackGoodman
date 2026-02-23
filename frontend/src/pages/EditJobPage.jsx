@@ -38,6 +38,7 @@ export default function EditJobPage() {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -97,7 +98,25 @@ export default function EditJobPage() {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
-  const submitForm = event => {
+  const uploadFilesForJob = async () => {
+    for (const file of selectedFiles) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("jobId", id);
+
+      const response = await apiFetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(data?.error || `Failed to upload ${file.name}.`);
+      }
+    }
+  };
+
+  const submitForm = async event => {
     event.preventDefault();
     setError("");
     setSubmitting(true);
@@ -114,20 +133,25 @@ export default function EditJobPage() {
       closingDate: form.closingDate || undefined
     };
 
-    apiFetch(`http://localhost:5000/api/jobs/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(async res => {
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || "Failed to update application.");
-        }
-      })
-      .then(() => navigate("/dashboard"))
-      .catch(err => setError(err.message))
-      .finally(() => setSubmitting(false));
+    try {
+      const updateResponse = await apiFetch(`http://localhost:5000/api/jobs/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const updateData = await updateResponse.json().catch(() => null);
+      if (!updateResponse.ok) {
+        throw new Error(updateData?.error || "Failed to update application.");
+      }
+
+      await uploadFilesForJob();
+      setSelectedFiles([]);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -264,7 +288,11 @@ export default function EditJobPage() {
             </label>
 
             <div className="form-span">
-              <FileUpload jobId={id} />
+              <FileUpload
+                files={selectedFiles}
+                onFilesChange={setSelectedFiles}
+                disabled={submitting}
+              />
             </div>
 
             {error ? <p className="form-error">{error}</p> : null}

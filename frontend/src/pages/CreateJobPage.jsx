@@ -29,7 +29,7 @@ export default function CreateJobPage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [uploadedFileIds, setUploadedFileIds] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -57,7 +57,25 @@ export default function CreateJobPage() {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
-  const submitForm = event => {
+  const uploadFilesForJob = async jobId => {
+    for (const file of selectedFiles) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("jobId", jobId);
+
+      const response = await apiFetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(data?.error || `Failed to upload ${file.name}.`);
+      }
+    }
+  };
+
+  const submitForm = async event => {
     event.preventDefault();
     setError("");
     setSubmitting(true);
@@ -71,24 +89,28 @@ export default function CreateJobPage() {
       workType: form.workType,
       salary: form.salary ? Number(form.salary) : undefined,
       appliedDate: form.appliedDate || undefined,
-      closingDate: form.closingDate || undefined,
-      fileIds: uploadedFileIds
+      closingDate: form.closingDate || undefined
     };
 
-    apiFetch("http://localhost:5000/api/jobs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(async res => {
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || "Failed to create application.");
-        }
-      })
-      .then(() => navigate("/dashboard"))
-      .catch(err => setError(err.message))
-      .finally(() => setSubmitting(false));
+    try {
+      const createResponse = await apiFetch("http://localhost:5000/api/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const createdJob = await createResponse.json().catch(() => null);
+      if (!createResponse.ok || !createdJob?._id) {
+        throw new Error(createdJob?.error || "Failed to create application.");
+      }
+
+      await uploadFilesForJob(createdJob._id);
+      setSelectedFiles([]);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -223,12 +245,9 @@ export default function CreateJobPage() {
 
           <div className="form-span">
             <FileUpload
-              onUploaded={file => {
-                if (!file?._id) return;
-                setUploadedFileIds(prev => (
-                  prev.includes(file._id) ? prev : [...prev, file._id]
-                ));
-              }}
+              files={selectedFiles}
+              onFilesChange={setSelectedFiles}
+              disabled={submitting}
             />
           </div>
 
