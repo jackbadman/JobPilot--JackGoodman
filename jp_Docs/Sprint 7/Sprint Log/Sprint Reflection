@@ -1,0 +1,10 @@
+Sprint 7 – Reflection Log
+
+What went well:
+Cloudinary document storage was successfully implemented and integrated with the backend and database.
+
+Even better if:
+The implementation effort for the Cloudinary integration had been estimated more accurately, as we had to drop testing implementation from this sprint. 
+
+How we can improve:
+Allow more contingency time for external service integrations.
