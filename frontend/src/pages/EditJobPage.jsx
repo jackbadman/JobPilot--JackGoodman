@@ -305,7 +305,7 @@ export default function EditJobPage() {
               >
                 Cancel
               </button>
-              <button type="submit" disabled={submitting}>
+              <button className="create-button" type="submit" disabled={submitting}>
                 {submitting ? "Saving..." : "Save changes"}
               </button>
             </div>

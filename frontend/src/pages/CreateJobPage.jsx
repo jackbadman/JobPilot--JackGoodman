@@ -257,7 +257,7 @@ export default function CreateJobPage() {
             <button type="button" className="ghost-button" onClick={() => navigate("/dashboard")}>
               Cancel
             </button>
-            <button type="submit" disabled={submitting}>
+            <button className="create-button" type="submit" disabled={submitting}>
               {submitting ? "Creating..." : "Create application"}
             </button>
           </div>

@@ -3,8 +3,10 @@
  */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import BrandMark from "../components/BrandMark";
 import SummaryCards from "../components/SummaryCards";
 import JobsTable from "../components/JobsTable";
+import { clearToken } from "../utils/auth";
 import { apiFetch } from "../utils/api";
 
 export default function DashboardPage() {
@@ -60,17 +62,42 @@ export default function DashboardPage() {
       .catch(console.error);
   };
 
+  const handleLogout = () => {
+    clearToken();
+    window.location.replace("/");
+  };
+
   return (
-    <div>
-      <div className="page-header">
-        <h1>Application Dashboard</h1>
-        <Link className="create-button" to="/jobs/new">
-          Create application
-        </Link>
+    <div className="dashboard-shell">
+      <section className="dashboard-banner">
+        <div className="dashboard-banner-copy">
+          <div className="dashboard-brand">
+            <BrandMark compact />
+          </div>
+          <span className="dashboard-kicker">Pipeline view</span>
+          <h1>Application Dashboard</h1>
+          <p>
+            Review your current search at a glance, then jump straight into the
+            next application or cleanup task.
+          </p>
+        </div>
+
+        <div className="dashboard-banner-actions">
+          <Link className="ghost-button" to="/">
+            Home
+          </Link>
+          <Link className="create-button" to="/jobs/new">
+            Create application
+          </Link>
+          <button className="ghost-button" type="button" onClick={handleLogout}>
+            Log out
+          </button>
+        </div>
+      </section>
+
+      <div>
+        {summary && <SummaryCards summary={summary} />}
       </div>
-
-      {summary && <SummaryCards summary={summary} />}
-
       <JobsTable jobs={jobs} onDelete={handleDelete} />
     </div>
   );
