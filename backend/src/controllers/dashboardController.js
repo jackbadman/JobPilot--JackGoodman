@@ -1,4 +1,5 @@
 import Job from "../models/Job.js";
+import mongoose from "mongoose";
 
 /**
  * Return summary metrics for the authenticated user.
@@ -6,13 +7,14 @@ import Job from "../models/Job.js";
 export const getDashboardSummary = async (req, res) => {
   try {
     const userId = req.user.id;
+    const userObjectId = new mongoose.Types.ObjectId(userId);
 
     // Total applications
     const totalCountPromise = Job.countDocuments({ userId });
 
     // Count by status
     const statusBreakdownPromise = Job.aggregate([
-      { $match: { userId } },
+      { $match: { userId: userObjectId } },
       {
         $group: {
           _id: "$jobStatus",

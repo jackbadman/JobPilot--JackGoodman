@@ -24,8 +24,8 @@ jobs:
         run: npm ci
       - name: Smoke test
         run: npm run smoke
-      - name: Tests
-        run: npm run test --if-present
+      - name: Integration tests
+        run: npm run test:integration
 
   frontend:
     runs-on: ubuntu-latest
