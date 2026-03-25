@@ -15,6 +15,10 @@ export function createApp() {
   app.use(cors());
   app.use(express.json());
 
+  app.get("/health", (_req, res) => {
+    res.json({ status: "ok" });
+  });
+
   app.use("/api/users", userRoutes);
   app.use("/api/jobs", jobRoutes);
   app.use("/api/files", fileRoutes);
