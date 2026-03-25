@@ -4,7 +4,7 @@ export default function BrandMark({ compact = false, invert = false }) {
       <img className="brand-logo" src="/logo.jpg" alt="Job Pilot logo" />
       <div className="brand-copy">
         <span className="brand-name">Job Pilot</span>
-        <span className="brand-tagline">Orbit your application pipeline</span>
+        <span className="brand-tagline">Launch your application pipeline</span>
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ export default function HomePage() {
 
           <div className="hero-stats" aria-label="Product benefits">
             <div className="hero-stat">
-              <span className="hero-stat-value">1 place</span>
+              <span className="hero-stat-value">One platform</span>
               <span className="hero-stat-label">for roles, files, and deadlines</span>
             </div>
             <div className="hero-stat">
@@ -45,9 +45,9 @@ export default function HomePage() {
         <aside className="hero-aside" aria-label="Feature overview">
           <div className="feature-card">
             <p className="eyebrow">Overview</p>
-            <h2>Designed for repeat applications, not just one-off tracking.</h2>
+            <h2>Designed for simple tracking of many applications..</h2>
             <p>
-              Job Pilot keeps your search legible when volume increases:
+              Job Pilot keeps your search organised when volume increases:
               application history, attached documents, and recent activity stay
               visible without clutter.
             </p>
@@ -55,7 +55,7 @@ export default function HomePage() {
 
           <div className="feature-card">
             <h3>What the UI should do</h3>
-            <p>Show momentum quickly, reduce form friction, and make each record easy to scan.</p>
+            <p>Allow you to record your applications with ease.</p>
           </div>
         </aside>
       </section>

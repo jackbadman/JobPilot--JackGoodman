@@ -1,31 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
 :root {
-  font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+  font-family: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #132238;
+  color: #172033;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 35%),
-    radial-gradient(circle at top right, rgba(196, 181, 253, 0.45), transparent 30%),
-    linear-gradient(180deg, #f7f4ff 0%, #efeafd 48%, #e6def9 100%);
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 28%),
+    radial-gradient(circle at top right, rgba(88, 146, 255, 0.12), transparent 32%),
+    linear-gradient(180deg, #f7f8fc 0%, #eef2f8 52%, #e8edf5 100%);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --bg: #f1ebff;
-  --bg-strong: #e8defc;
-  --card: rgba(252, 250, 255, 0.88);
-  --card-strong: #fcf9ff;
-  --card-dark: #1f2937;
-  --ink: #21173a;
-  --muted: #6f6688;
-  --line: rgba(33, 23, 58, 0.12);
-  --line-strong: rgba(33, 23, 58, 0.2);
-  --accent: #7c58d6;
-  --accent-strong: #6744c6;
-  --accent-soft: rgba(124, 88, 214, 0.14);
-  --success-soft: rgba(25, 135, 84, 0.14);
-  --danger-soft: rgba(186, 59, 47, 0.14);
-  --shadow: 0 24px 60px rgba(70, 49, 128, 0.14);
+  --font-sans: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", "Consolas", monospace;
+  --bg: #edf2f8;
+  --bg-strong: #e3eaf3;
+  --card: rgba(255, 255, 255, 0.86);
+  --card-strong: #ffffff;
+  --card-dark: #111827;
+  --ink: #172033;
+  --muted: #5f6c82;
+  --line: rgba(23, 32, 51, 0.1);
+  --line-strong: rgba(23, 32, 51, 0.18);
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --accent-soft: rgba(37, 99, 235, 0.12);
+  --success-soft: rgba(14, 116, 144, 0.14);
+  --danger-soft: rgba(185, 28, 28, 0.12);
+  --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+  --shadow-strong: 0 28px 80px rgba(15, 23, 42, 0.12);
+  --radius-panel: 24px;
+  --radius-card: 18px;
 }
 
 *,
@@ -37,6 +44,7 @@
 html {
   min-width: 320px;
   min-height: 100%;
+  background: linear-gradient(180deg, #f7f8fc 0%, #e8edf5 100%);
 }
 
 body {
@@ -44,7 +52,12 @@ body {
   min-width: 320px;
   min-height: 100vh;
   color: var(--ink);
-  background: transparent;
+  font-family: var(--font-sans);
+  background:
+    linear-gradient(rgba(124, 140, 167, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 140, 167, 0.08) 1px, transparent 1px),
+    transparent;
+  background-size: 32px 32px, 32px 32px, auto;
 }
 
 a {
@@ -63,7 +76,29 @@ button {
   cursor: pointer;
 }
 
+button,
+input,
+select,
+textarea {
+  letter-spacing: -0.01em;
+}
+
 img {
   max-width: 100%;
   display: block;
+}
+
+#root {
+  position: relative;
+}
+
+#root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 255, 255, 0.8), transparent 22%),
+    radial-gradient(circle at 88% 0%, rgba(37, 99, 235, 0.08), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(15, 23, 42, 0.05), transparent 28%);
 }
