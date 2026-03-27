@@ -8,6 +8,7 @@ import SummaryCards from "../components/SummaryCards";
 import JobsTable from "../components/JobsTable";
 import { clearToken } from "../utils/auth";
 import { apiFetch } from "../utils/api";
+import "./DashboardPage.css";
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState(null);

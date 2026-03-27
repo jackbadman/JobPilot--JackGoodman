@@ -1,6 +1,8 @@
 /**
  * Dashboard summary cards for totals and recent counts.
  */
+import "./SummaryCards.css";
+
 export default function SummaryCards({ summary }) {
   const items = [
     {

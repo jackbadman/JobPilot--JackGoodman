@@ -2,6 +2,7 @@
  * Job list table with edit/delete actions.
  */
 import { Link } from "react-router-dom";
+import "./JobsTable.css";
 
 export default function JobsTable({ jobs, onDelete }) {
   const confirmDelete = job => {

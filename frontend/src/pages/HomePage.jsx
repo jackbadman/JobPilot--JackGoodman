@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import BrandMark from "../components/BrandMark";
+import "./HomePage.css";
 
 export default function HomePage() {
   return (

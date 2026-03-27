@@ -89,6 +89,9 @@ img {
 }
 
 #root {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
   position: relative;
 }
 
@@ -101,4 +104,11 @@ img {
     radial-gradient(circle at 12% 12%, rgba(255, 255, 255, 0.8), transparent 22%),
     radial-gradient(circle at 88% 0%, rgba(37, 99, 235, 0.08), transparent 24%),
     radial-gradient(circle at 50% 100%, rgba(15, 23, 42, 0.05), transparent 28%);
+}
+
+@media (max-width: 720px) {
+  #root {
+    width: min(100%, calc(100% - 1.25rem));
+    padding: 1.25rem 0 2rem;
+  }
 }

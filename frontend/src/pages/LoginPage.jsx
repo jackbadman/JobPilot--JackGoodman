@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BrandMark from "../components/BrandMark";
 import { clearToken, setToken } from "../utils/auth";
+import "./AuthPage.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();

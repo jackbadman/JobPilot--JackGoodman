@@ -1,3 +1,5 @@
+import "./BrandMark.css";
+
 export default function BrandMark({ compact = false, invert = false }) {
   return (
     <div className={`brand-mark${compact ? " brand-mark-compact" : ""}${invert ? " brand-mark-invert" : ""}`}>

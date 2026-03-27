@@ -1,0 +1,174 @@
+.table-card {
+  background: var(--card);
+  border-radius: var(--radius-panel);
+  padding: 1.5rem 1.75rem 1rem;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.table-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.table-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.table-count {
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.jobs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  min-width: 720px;
+}
+
+.jobs-table thead th {
+  text-align: left;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+}
+
+.jobs-table tbody td {
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.jobs-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.jobs-table tbody tr:hover {
+  background: rgba(37, 99, 235, 0.045);
+}
+
+.table-actions {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.table-action {
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+  padding: 0.45rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.table-action.danger {
+  border-color: rgba(185, 28, 28, 0.22);
+  color: #b91c1c;
+}
+
+.cell-strong {
+  font-weight: 600;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(23, 32, 51, 0.08);
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+}
+
+.status-applied {
+  background: rgba(37, 99, 235, 0.14);
+  color: #1d4ed8;
+}
+
+.status-interview {
+  background: rgba(14, 116, 144, 0.16);
+  color: #0f766e;
+}
+
+.status-offer {
+  background: rgba(22, 163, 74, 0.14);
+  color: #15803d;
+}
+
+.status-rejected {
+  background: rgba(185, 28, 28, 0.12);
+  color: #b91c1c;
+}
+
+.status-unknown {
+  background: rgba(100, 116, 139, 0.18);
+  color: #475569;
+}
+
+.empty-state {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.empty-title {
+  font-weight: 800;
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.04em;
+}
+
+.empty-subtitle {
+  color: var(--muted);
+  max-width: 360px;
+}
+
+@media (max-width: 720px) {
+  .jobs-table {
+    min-width: 640px;
+  }
+}
+
+@media (max-width: 640px) {
+  .table-card {
+    padding: 1.25rem;
+    border-radius: 24px;
+  }
+}

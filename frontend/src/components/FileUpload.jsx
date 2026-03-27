@@ -1,3 +1,5 @@
+import "./FileUpload.css";
+
 const ACCEPTED_TYPES = ".pdf,.png,.jpg,.jpeg,.doc,.docx";
 
 /**
