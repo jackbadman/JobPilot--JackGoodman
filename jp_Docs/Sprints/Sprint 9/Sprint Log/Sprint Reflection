@@ -1,0 +1,18 @@
+Sprint 9 – Reflection
+
+What went well
+
+Implemented a full testing stack across backend, frontend, and E2E
+Core authentication and API behaviour now validated
+Frontend structure improved through component-level CSS
+
+Even better if
+
+Usability testing had been included alongside functional testing
+Broader test coverage across more scenarios
+
+How to improve
+
+Allocate time for usability evaluation
+Expand integration and E2E test depth
+Introduce coverage reporting to quantify test completeness

@@ -1,0 +1,55 @@
+Sprint Meeting
+
+Project: Job Pilot
+Sprint #: 9
+Date: 27/03/2026
+Time: Not scheduled (update provided via email)
+Attendees: Jack Goodman, Haoyi Wang
+
+Sprint Goal
+
+Implement testing across backend and frontend, and improve frontend structure.
+
+Work Completed
+
+Backend
+
+4 unit tests for auth middleware:
+Missing token, invalid header, failed JWT, valid JWT
+1 smoke test for backend setup
+9 integration tests covering core API behaviour
+
+Frontend
+
+7 unit tests:
+JWT parsing, expiry handling, storage, clearing, auth helpers
+
+E2E
+
+2 Playwright tests:
+Core user journeys (Chromium)
+
+Frontend Refactor
+
+Split App.css into component-level CSS files
+
+
+Work Not Completed
+No usability testing
+No coverage reporting
+Limited E2E scenarios
+Next Steps
+Add usability testing
+Expand integration and E2E tests
+Add coverage reporting
+Reflection
+
+Went well
+
+Full testing stack implemented (unit → integration → E2E)
+Core auth and API behaviour validated
+
+Improve
+
+Add usability testing
+Increase test coverage depth
