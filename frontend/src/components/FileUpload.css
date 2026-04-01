@@ -33,3 +33,23 @@
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.84);
 }
+
+.upload-file-link {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.upload-file-link:hover {
+  text-decoration: underline;
+}
+
+.upload-file-badge {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #155e75;
+  background: rgba(207, 250, 254, 0.9);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}

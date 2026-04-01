@@ -39,6 +39,7 @@ export default function EditJobPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [existingFiles, setExistingFiles] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -69,6 +70,7 @@ export default function EditJobPage() {
           appliedDate: toDateInputValue(job.appliedDate),
           closingDate: toDateInputValue(job.closingDate)
         });
+        setExistingFiles(Array.isArray(job.files) ? job.files : []);
       })
       .catch(err => {
         if (!isMounted) return;
@@ -290,6 +292,7 @@ export default function EditJobPage() {
             <div className="form-span">
               <FileUpload
                 files={selectedFiles}
+                existingFiles={existingFiles}
                 onFilesChange={setSelectedFiles}
                 disabled={submitting}
               />

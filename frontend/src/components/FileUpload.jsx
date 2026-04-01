@@ -2,10 +2,17 @@ import "./FileUpload.css";
 
 const ACCEPTED_TYPES = ".pdf,.png,.jpg,.jpeg,.doc,.docx";
 
+const getFileName = file => file?.filename || file?.name || "Untitled file";
+
 /**
  * File picker used by job forms. Uploading is handled by the parent submit flow.
  */
-export default function FileUpload({ files = [], onFilesChange, disabled = false }) {
+export default function FileUpload({
+  files = [],
+  existingFiles = [],
+  onFilesChange,
+  disabled = false
+}) {
   const onFileChange = event => {
     const pickedFiles = Array.from(event.target.files || []);
     if (!pickedFiles.length) return;
@@ -31,11 +38,36 @@ export default function FileUpload({ files = [], onFilesChange, disabled = false
         disabled={disabled}
       />
 
+      {existingFiles.length ? (
+        <div className="upload-file-list">
+          {existingFiles.map(file => (
+            <div
+              key={file._id || file.publicId || file.url || getFileName(file)}
+              className="upload-file-row"
+            >
+              {file.url ? (
+                <a
+                  className="upload-file-link"
+                  href={file.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {getFileName(file)}
+                </a>
+              ) : (
+                <span>{getFileName(file)}</span>
+              )}
+              <span className="upload-file-badge">Uploaded</span>
+            </div>
+          ))}
+        </div>
+      ) : null}
+
       {files.length ? (
         <div className="upload-file-list">
           {files.map((file, index) => (
-            <div key={`${file.name}-${file.size}-${index}`} className="upload-file-row">
-              <span>{file.name}</span>
+            <div key={`${getFileName(file)}-${file.size}-${index}`} className="upload-file-row">
+              <span>{getFileName(file)}</span>
               <button
                 type="button"
                 className="table-action danger"
