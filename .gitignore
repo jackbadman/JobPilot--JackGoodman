@@ -4,3 +4,5 @@ frontend/node_modules/
 # Environment variables
 backend/.env
 frontend/.env
+# Report
+jp_Docs/Report/
