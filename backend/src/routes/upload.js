@@ -34,9 +34,18 @@ router.post("/", (req, res) => {
         jobId: job?._id,
         filename: req.file.originalname,
         url: fileUrl,
+        publicId: req.file.filename,
+        size: req.file.size,
         contentType: req.file.mimetype,
+        format: req.file.format,
         description: description || ""
       });
+
+      if (job) {
+        await Job.findByIdAndUpdate(job._id, {
+          $addToSet: { files: file._id }
+        });
+      }
 
       return res.json(file);
     } catch (caughtErr) {

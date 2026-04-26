@@ -55,6 +55,12 @@ export const deleteFile = async (req, res) => {
       return res.status(403).json({ error: "Not authorized to delete this file." });
     }
 
+    if (file.jobId) {
+      await Job.findByIdAndUpdate(file.jobId, {
+        $pull: { files: file._id }
+      });
+    }
+
     await file.deleteOne();
     res.json({ message: "File deleted successfully" });
   } catch (err) {
