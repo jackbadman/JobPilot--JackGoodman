@@ -4,23 +4,25 @@ Job Pilot is a job application tracking system built with a React frontend, an E
 
 ## Overview
 
-The application is designed to help users track job applications in one place. It currently supports:
+The application helps users track job applications in one place. It currently supports:
 
 - user registration and login with JWT-based authentication
-- creating, editing, listing, filtering, and deleting job applications
+- protected dashboard and job-management pages
+- creating, editing, listing, and deleting job applications, with API-level filtering
 - lookup-backed fields for job status, job type, work type, and location
-- dashboard summary metrics for total applications, recent activity, and status breakdown
-- file upload endpoints and file metadata handling
+- salary, applied date, closing date, and favourite fields on job records
+- dashboard summary metrics for total applications, recent applications, and status breakdown
+- Cloudinary-backed file uploads, file metadata storage, job-file association, and file deletion
 
 ## Repository Structure
 
 ```text
 .
-|-- backend/                 # Express API, MongoDB models, integration tests
-|-- frontend/                # React + Vite single-page application
+|-- backend/                 # Express API, MongoDB models, scripts, and tests
+|-- frontend/                # React + Vite single-page application and tests
 |-- .github/workflows/       # GitHub Actions CI
 |-- .githooks/               # Repo-managed Git hooks
-|-- docker-compose.yml       # Local multi-container setup
+|-- docker-compose.yml       # Local frontend/backend container setup
 `-- jp_Docs/                 # Project documentation and sprint artefacts
 ```
 
@@ -28,21 +30,59 @@ The application is designed to help users track job applications in one place. I
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | React 19, React Router, Vite |
+| Frontend | React 19, React Router 6, Vite 7 |
 | Backend | Node.js, Express 5 |
 | Database | MongoDB with Mongoose |
-| Authentication | JWT |
-| File Uploads | Multer + Cloudinary |
-| Testing | Node test runner, Supertest, mongodb-memory-server |
+| Authentication | JWT, bcrypt |
+| File uploads | Multer, multer-storage-cloudinary, Cloudinary |
+| Backend tests | Node test runner, Supertest, mongodb-memory-server |
+| Frontend tests | Node test runner, Playwright |
 | Containers | Docker, Docker Compose |
 | CI | GitHub Actions |
 
 ## Current Architecture
 
-- The frontend lives in [`frontend/`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/frontend) and calls the backend API over HTTP.
-- The backend lives in [`backend/`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/backend) and exposes routes under `/api/...`.
-- The backend app composition is defined in [`backend/src/app.js`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/backend/src/app.js), while runtime startup happens in [`backend/src/server.js`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/backend/src/server.js).
+- The frontend lives in `frontend/` and calls the backend API directly over HTTP.
+- The backend lives in `backend/` and exposes routes under `/api/...`.
+- Backend app composition is defined in `backend/src/app.js`; runtime startup is handled by `backend/src/server.js`.
 - The frontend currently targets `http://localhost:5000` directly for API requests.
+- JWTs are stored in browser `localStorage`; expired or invalid tokens are cleared and redirect the user back to `/`.
+- MongoDB lookup collections are data-driven. A usable local database needs job statuses, job types, work types, and locations populated before the create/edit forms can submit valid jobs.
+
+## API Surface
+
+All routes below return JSON. Protected routes require an `Authorization: Bearer <token>` header.
+
+| Method | Route | Auth | Purpose |
+|--------|-------|------|---------|
+| `GET` | `/health` | No | Health check |
+| `POST` | `/api/users/register` | No | Create a user and return a token |
+| `POST` | `/api/users/login` | No | Authenticate a user and return a token |
+| `GET` | `/api/users` | Yes | List public user fields |
+| `GET` | `/api/users/me` | Yes | Return the authenticated user's public profile |
+| `GET` | `/api/jobs` | Yes | List the authenticated user's jobs; supports `status`, `type`, `workType`, `location`, and `sort` query params |
+| `POST` | `/api/jobs` | Yes | Create a job application |
+| `GET` | `/api/jobs/:id` | Yes | Fetch one owned job application |
+| `PUT` | `/api/jobs/:id` | Yes | Update one owned job application |
+| `DELETE` | `/api/jobs/:id` | Yes | Delete one owned job application |
+| `GET` | `/api/dashboard/summary` | Yes | Return total, recent, and by-status application counts |
+| `GET` | `/api/lookup/job-statuses` | Yes | List job status lookup values |
+| `GET` | `/api/lookup/job-types` | Yes | List job type lookup values |
+| `GET` | `/api/lookup/work-types` | Yes | List work type lookup values |
+| `GET` | `/api/lookup/locations` | Yes | List location lookup values |
+| `POST` | `/api/upload` | Yes | Upload one binary file to Cloudinary with optional `jobId` |
+| `POST` | `/api/files` | Yes | Create a file metadata record without uploading binary content |
+| `GET` | `/api/files/job/:jobId` | Yes | List file metadata for one owned job |
+| `DELETE` | `/api/files/:id` | Yes | Delete one owned file metadata record and detach it from its job |
+
+## Data Model
+
+The main collections are:
+
+- `User`: `emailAddress`, `name`, and hidden `passwordHash`
+- `Job`: owner, company, title, lookup references, optional salary/dates, favourite flag, and attached files
+- `File`: owner, optional job reference, filename, URL, Cloudinary public id, size, content type, format, and description
+- `JobStatus`, `JobType`, `WorkType`, `Location`: unique lookup names used by job forms and filters
 
 ## Requirements
 
@@ -50,12 +90,14 @@ For local development without Docker:
 
 - Node.js 20+
 - npm
-- a MongoDB instance or MongoDB Atlas connection
-- Cloudinary credentials if you want to exercise upload flows
+- MongoDB, either local or hosted
+- Cloudinary credentials for upload flows
+
+The Dockerfiles currently use Node 22 Alpine images. CI runs on Node 20.
 
 ## Environment Variables
 
-The backend expects environment variables for database, auth, and upload configuration.
+The backend expects environment variables for database, auth, and uploads.
 
 Required backend variables:
 
@@ -64,13 +106,18 @@ Required backend variables:
 - `CLOUDINARY_CLOUD_NAME`
 - `CLOUDINARY_API_KEY`
 - `CLOUDINARY_API_SECRET`
-- `PORT` optional, defaults to `5000`
+
+Optional backend variable:
+
+- `PORT`, defaults to `5000`
 
 Copy the template and adjust values for your environment:
 
 ```bash
 cp backend/.env.example backend/.env
 ```
+
+There is no active frontend environment configuration at the moment because API URLs are hardcoded in the React source.
 
 ## Running Locally
 
@@ -95,6 +142,17 @@ npm run dev
 
 The frontend starts on `http://localhost:5173`.
 
+### Lookup Data
+
+The app does not currently include a production seed command. Before creating jobs in a fresh database, insert lookup documents for:
+
+- `jobstatuses`
+- `jobtypes`
+- `worktypes`
+- `locations`
+
+The automated tests seed their own lookup data in memory.
+
 ## Running With Docker
 
 From the repository root:
@@ -110,58 +168,78 @@ This starts:
 
 The backend container reads environment variables from `backend/.env`.
 
+Important: `docker-compose.yml` starts only the frontend and backend. It does not start MongoDB, so `MONGO_URI` must point to a database reachable from inside the backend container. A `localhost` MongoDB URI inside the container refers to the container itself, not your host machine.
+
 ## Testing
 
-Backend integration tests are located in [`backend/tests/`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/backend/tests).
-
-Current backend integration coverage includes:
-
-- authentication
-- job CRUD and ownership isolation
-- lookup endpoints
-- dashboard summary aggregation
-
-Run the backend integration suite with:
+### Backend
 
 ```bash
 cd backend
+npm run smoke
+npm run test:unit
 npm run test:integration
 ```
 
-The suite uses:
+Backend coverage includes:
 
-- `supertest` for HTTP-level API testing
-- `mongodb-memory-server` for isolated test databases
+- auth middleware behavior
+- registration, login, email normalization, password hashing, and `/me`
+- job CRUD, ownership isolation, and filtering
+- lookup endpoint authentication and responses
+- dashboard summary aggregation
+
+Backend integration tests use `supertest` and `mongodb-memory-server`.
+
+### Frontend
+
+```bash
+cd frontend
+npm run test:unit
+npm run lint
+npm run build
+npm run test:e2e
+```
+
+Frontend coverage includes:
+
+- auth utility token parsing, storage, expiry checks, and cleanup
+- Playwright browser flows for sign-up/login and create/edit/delete job applications
+
+The Playwright config starts:
+
+- the backend e2e server from `backend/scripts/e2eServer.js`
+- the Vite dev server on `http://127.0.0.1:4173`
+
+The e2e backend uses `mongodb-memory-server` and seeds lookup data automatically.
 
 ## CI
 
-GitHub Actions configuration is in [`/.github/workflows/ci.yml`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/.github/workflows/ci.yml).
+GitHub Actions configuration is in `.github/workflows/ci.yml`.
 
-The current pipeline runs:
+The current pipeline has three jobs:
 
-- backend install
-- backend smoke test
-- backend integration tests
-- frontend install
-- frontend lint
-- frontend build
+- `backend`: install, unit tests, smoke test, integration tests
+- `frontend`: install, unit tests, lint, build
+- `e2e`: install backend/frontend dependencies, install Chromium, run Playwright tests, upload Playwright reports when present
 
 ## Git Hooks
 
-A repo-managed pre-push hook exists at [`.githooks/pre-push`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/.githooks/pre-push). It runs the backend integration suite before push.
+A repo-managed pre-push hook exists at `.githooks/pre-push`. It runs the backend integration suite before push.
 
-Important:
+Enable it in a clone with:
 
-- Git does not use `.githooks` automatically unless `core.hooksPath` is configured.
-- In this local clone, `core.hooksPath` was configured manually.
-- Other clones will need the same config if you want the hook to run locally there too.
+```bash
+git config core.hooksPath .githooks
+```
 
 ## Known Gaps
 
 - The frontend API base URL is hardcoded to `http://localhost:5000`.
-- Browser end-to-end tests are not implemented yet.
+- There is no production seed script for lookup data.
 - File upload integration tests are not implemented yet.
+- Docker Compose does not include a MongoDB service.
 
 ## License
 
-This project is licensed under the terms in [`LICENSE`](/home/jgoodman/Desktop/Uni/COMP3000%20-%20Dissertation%20Project/Job-Pilot-repo/LICENSE).
+This project is licensed under the terms in `LICENSE`.
