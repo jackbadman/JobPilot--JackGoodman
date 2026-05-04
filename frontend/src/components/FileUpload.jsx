@@ -11,6 +11,8 @@ export default function FileUpload({
   files = [],
   existingFiles = [],
   onFilesChange,
+  onExistingFileRemove,
+  removingExistingFileId = "",
   disabled = false
 }) {
   const onFileChange = event => {
@@ -57,7 +59,18 @@ export default function FileUpload({
               ) : (
                 <span>{getFileName(file)}</span>
               )}
-              <span className="upload-file-badge">Uploaded</span>
+              {onExistingFileRemove ? (
+                <button
+                  type="button"
+                  className="table-action danger"
+                  onClick={() => onExistingFileRemove(file)}
+                  disabled={disabled || removingExistingFileId === file._id}
+                >
+                  {removingExistingFileId === file._id ? "Removing..." : "Remove"}
+                </button>
+              ) : (
+                <span className="upload-file-badge">Uploaded</span>
+              )}
             </div>
           ))}
         </div>

@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiFetch } from "../utils/api";
+import { parseSalary, sanitizeSalaryInput } from "../utils/salary";
 import FileUpload from "../components/FileUpload";
 
 const emptyOption = { _id: "", name: "Select..." };
@@ -40,6 +41,7 @@ export default function EditJobPage() {
   const [error, setError] = useState("");
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [existingFiles, setExistingFiles] = useState([]);
+  const [removingFileId, setRemovingFileId] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -100,6 +102,10 @@ export default function EditJobPage() {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
+  const updateSalary = value => {
+    updateField("salary", sanitizeSalaryInput(value));
+  };
+
   const uploadFilesForJob = async () => {
     for (const file of selectedFiles) {
       const formData = new FormData();
@@ -118,24 +124,48 @@ export default function EditJobPage() {
     }
   };
 
+  const removeExistingFile = async file => {
+    if (!file?._id) return;
+
+    setError("");
+    setRemovingFileId(file._id);
+
+    try {
+      const response = await apiFetch(`http://localhost:5000/api/files/${file._id}`, {
+        method: "DELETE"
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to remove file.");
+      }
+
+      setExistingFiles(prev => prev.filter(existingFile => existingFile._id !== file._id));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setRemovingFileId("");
+    }
+  };
+
   const submitForm = async event => {
     event.preventDefault();
     setError("");
     setSubmitting(true);
 
-    const payload = {
-      company: form.company.trim(),
-      jobTitle: form.jobTitle.trim(),
-      location: form.location,
-      jobStatus: form.jobStatus,
-      jobType: form.jobType,
-      workType: form.workType,
-      salary: form.salary ? Number(form.salary) : undefined,
-      appliedDate: form.appliedDate || undefined,
-      closingDate: form.closingDate || undefined
-    };
-
     try {
+      const payload = {
+        company: form.company.trim(),
+        jobTitle: form.jobTitle.trim(),
+        location: form.location,
+        jobStatus: form.jobStatus,
+        jobType: form.jobType,
+        workType: form.workType,
+        salary: parseSalary(form.salary),
+        appliedDate: form.appliedDate || undefined,
+        closingDate: form.closingDate || undefined
+      };
+
       const updateResponse = await apiFetch(`http://localhost:5000/api/jobs/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -262,10 +292,9 @@ export default function EditJobPage() {
               Salary
               <input
                 className="input"
-                type="number"
-                min="0"
+                inputMode="numeric"
                 value={form.salary}
-                onChange={event => updateField("salary", event.target.value)}
+                onChange={event => updateSalary(event.target.value)}
               />
             </label>
 
@@ -294,7 +323,9 @@ export default function EditJobPage() {
                 files={selectedFiles}
                 existingFiles={existingFiles}
                 onFilesChange={setSelectedFiles}
-                disabled={submitting}
+                onExistingFileRemove={removeExistingFile}
+                removingExistingFileId={removingFileId}
+                disabled={submitting || Boolean(removingFileId)}
               />
             </div>
 

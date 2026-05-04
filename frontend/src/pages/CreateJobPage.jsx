@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../utils/api";
+import { parseSalary, sanitizeSalaryInput } from "../utils/salary";
 import FileUpload from "../components/FileUpload";
 
 const emptyOption = { _id: "", name: "Select..." };
@@ -57,6 +58,10 @@ export default function CreateJobPage() {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
+  const updateSalary = value => {
+    updateField("salary", sanitizeSalaryInput(value));
+  };
+
   const uploadFilesForJob = async jobId => {
     for (const file of selectedFiles) {
       const formData = new FormData();
@@ -80,19 +85,19 @@ export default function CreateJobPage() {
     setError("");
     setSubmitting(true);
 
-    const payload = {
-      company: form.company.trim(),
-      jobTitle: form.jobTitle.trim(),
-      location: form.location,
-      jobStatus: form.jobStatus,
-      jobType: form.jobType,
-      workType: form.workType,
-      salary: form.salary ? Number(form.salary) : undefined,
-      appliedDate: form.appliedDate || undefined,
-      closingDate: form.closingDate || undefined
-    };
-
     try {
+      const payload = {
+        company: form.company.trim(),
+        jobTitle: form.jobTitle.trim(),
+        location: form.location,
+        jobStatus: form.jobStatus,
+        jobType: form.jobType,
+        workType: form.workType,
+        salary: parseSalary(form.salary),
+        appliedDate: form.appliedDate || undefined,
+        closingDate: form.closingDate || undefined
+      };
+
       const createResponse = await apiFetch("http://localhost:5000/api/jobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -216,10 +221,9 @@ export default function CreateJobPage() {
             Salary
             <input
               className="input"
-              type="number"
-              min="0"
+              inputMode="numeric"
               value={form.salary}
-              onChange={event => updateField("salary", event.target.value)}
+              onChange={event => updateSalary(event.target.value)}
             />
           </label>
 
