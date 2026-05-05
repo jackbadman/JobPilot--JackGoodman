@@ -56,11 +56,15 @@ export const deleteFile = async (req, res) => {
     }
 
     if (file.jobId) {
+      // Detach metadata from the job before deleting the File record so future
+      // job fetches do not populate stale file references.
       await Job.findByIdAndUpdate(file.jobId, {
         $pull: { files: file._id }
       });
     }
 
+    // This deletes MongoDB metadata only; Cloudinary cleanup needs the stored
+    // publicId and must be handled separately if remote deletion is required.
     await file.deleteOne();
     res.json({ message: "File deleted successfully" });
   } catch (err) {

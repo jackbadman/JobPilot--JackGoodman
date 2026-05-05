@@ -10,9 +10,9 @@ The application helps users track job applications in one place. It currently su
 - protected dashboard and job-management pages
 - creating, editing, listing, and deleting job applications, with API-level filtering
 - lookup-backed fields for job status, job type, work type, and location
-- salary, applied date, closing date, and favourite fields on job records
+- salary, applied date, closing date, and stored favourite flag on job records
 - dashboard summary metrics for total applications, recent applications, and status breakdown
-- Cloudinary-backed file uploads, file metadata storage, job-file association, and file deletion
+- Cloudinary-backed file uploads, file metadata storage, job-file association, and metadata deletion
 
 ## Repository Structure
 
@@ -73,7 +73,7 @@ All routes below return JSON. Protected routes require an `Authorization: Bearer
 | `POST` | `/api/upload` | Yes | Upload one binary file to Cloudinary with optional `jobId` |
 | `POST` | `/api/files` | Yes | Create a file metadata record without uploading binary content |
 | `GET` | `/api/files/job/:jobId` | Yes | List file metadata for one owned job |
-| `DELETE` | `/api/files/:id` | Yes | Delete one owned file metadata record and detach it from its job |
+| `DELETE` | `/api/files/:id` | Yes | Delete one owned file metadata record and detach it from its job; Cloudinary asset deletion is not currently implemented |
 
 ## Data Model
 
@@ -238,6 +238,7 @@ git config core.hooksPath .githooks
 - The frontend API base URL is hardcoded to `http://localhost:5000`.
 - There is no production seed script for lookup data.
 - File upload integration tests are not implemented yet.
+- File deletion removes database metadata but does not currently destroy Cloudinary assets.
 - Docker Compose does not include a MongoDB service.
 
 ## License

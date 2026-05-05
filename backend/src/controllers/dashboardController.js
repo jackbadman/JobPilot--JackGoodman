@@ -7,12 +7,14 @@ import mongoose from "mongoose";
 export const getDashboardSummary = async (req, res) => {
   try {
     const userId = req.user.id;
+    // Mongoose casts string ids for normal queries, but aggregation pipelines do
+    // not cast automatically. Convert here so the $match stage sees ObjectIds.
     const userObjectId = new mongoose.Types.ObjectId(userId);
 
-    // Total applications
     const totalCountPromise = Job.countDocuments({ userId });
 
-    // Count by status
+    // Group by the status lookup id, then join the lookup collection so the
+    // dashboard can display stable status names instead of raw ObjectIds.
     const statusBreakdownPromise = Job.aggregate([
       { $match: { userId: userObjectId } },
       {
@@ -39,7 +41,8 @@ export const getDashboardSummary = async (req, res) => {
       }
     ]);
 
-    // Recent applications within the last 14 days.
+    // "Recent" is based on creation time, not appliedDate, so imported or
+    // backdated applications do not inflate this onboarding/activity metric.
     const fourteenDaysAgo = new Date();
     fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
 

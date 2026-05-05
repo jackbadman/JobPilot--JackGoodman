@@ -11,6 +11,8 @@ import WorkType from "../../src/models/WorkType.js";
 let mongoServer;
 
 export async function startTestDatabase() {
+  // Integration tests issue real JWTs, so provide a deterministic secret when
+  // the caller has not configured one.
   process.env.JWT_SECRET ||= "integration-test-secret";
 
   mongoServer = await MongoMemoryServer.create({
@@ -39,6 +41,8 @@ export async function resetDatabase() {
 }
 
 export async function seedLookups() {
+  // Job creation requires lookup ObjectIds. Tests seed only the values they use
+  // so each test can assert against known, isolated reference data.
   const [appliedStatus, interviewStatus, fullTimeType, remoteType, londonLocation] =
     await Promise.all([
       JobStatus.create({ name: "Applied" }),

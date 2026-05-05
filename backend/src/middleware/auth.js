@@ -16,6 +16,8 @@ export default function authMiddleware(req, res, next) {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
+    // Tokens issued by userController store the Mongo user id in the JWT subject.
+    // Downstream controllers rely on this single normalized ownership field.
     req.user = { id: payload.sub };
     return next();
   } catch (err) {

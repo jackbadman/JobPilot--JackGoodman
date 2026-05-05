@@ -14,6 +14,9 @@ export const createJob = async (req, res) => {
     });
 
     if (Array.isArray(fileIds) && fileIds.length) {
+      // Only unassigned files owned by this user can be attached during create.
+      // This prevents linking another user's file metadata or stealing a file
+      // that is already associated with a different job.
       const attachableFiles = await File.find({
         _id: { $in: fileIds },
         userId: req.user.id,
@@ -103,6 +106,8 @@ export const getJobById = async (req, res) => {
  */
 export const updateJob = async (req, res) => {
   try {
+    // Keep the ownership check in the update filter so another user's job id
+    // behaves like "not found" rather than exposing that the record exists.
     const job = await Job.findOneAndUpdate(
       { _id: req.params.id, userId: req.user.id },
       req.body,
@@ -132,6 +137,8 @@ export const deleteJob = async (req, res) => {
       return res.status(404).json({ error: "Job not found" });
     }
 
+    // This removes the job record only. Attached File metadata and Cloudinary
+    // assets currently need separate cleanup if full document deletion is wanted.
     res.json({ message: "Job deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });

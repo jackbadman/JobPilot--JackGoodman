@@ -27,6 +27,8 @@ router.post("/", (req, res) => {
       if (!req.file) {
         return res.status(400).json({ error: "A file is required." });
       }
+      // Cloudinary storage has already uploaded the binary at this point.
+      // The File document below is only our metadata/ownership record.
       const fileUrl = req.file.secure_url || req.file.url || req.file.path;
 
       const file = await File.create({
@@ -42,6 +44,8 @@ router.post("/", (req, res) => {
       });
 
       if (job) {
+        // Store the relationship in both directions because job fetches populate
+        // Job.files, while file routes query by File.jobId.
         await Job.findByIdAndUpdate(job._id, {
           $addToSet: { files: file._id }
         });
